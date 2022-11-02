@@ -1,2 +1,9 @@
-# Catalogo-de-Filmes
-Projeto feito como Trabalho Prático da disciplina Engenharia de Software II (UFMG)
+# Catálogo de Filmes 
+
+## Grupo
+- Guilherme Miranda
+- Jackson Nunes Silva
+
+## Descrição
+
+## Tecnologias
