@@ -10,8 +10,8 @@ MOVIE_API_BASE_URL ="https://api.themoviedb.org/3/movie/{}?api_key={}"
 MOVIE_API_KEY = 'af8d804575fad92d693d1775092e6217'
 
 # Database
-#SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI')
-#SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_DATABASE_URI = 'sqlite:///src/app.db'
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # AWS Secrets
 #AWS_SECRET_KEY = environ.get('AWS_SECRET_KEY')
