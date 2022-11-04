@@ -13,3 +13,15 @@ O sistema funciona como um catálogo de filmes, no qual o usuário pode se regis
 - HTML
 - CSS
 - SQLite
+
+## Instruções
+
+1. Instalar dependências:
+```bash
+pip install -r requirements.txt
+```
+
+2. Executar o comando na raíz do projeto:
+```bash
+flask run
+```
