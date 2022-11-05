@@ -2,11 +2,11 @@
 
 FLASK_ENV = 'development'
 TESTING = True
-#SECRET_KEY = environ.get('SECRET_KEY')
+SECRET_KEY = 'a3jfd4jdc'
 STATIC_FOLDER = 'src/static'
 #TEMPLATES_FOLDER = 'src/templates'
 
-MOVIE_API_BASE_URL ="https://api.themoviedb.org/3/movie/{}?api_key={}"
+MOVIE_API_BASE_URL = 'https://api.themoviedb.org/3/movie/{}?api_key={}'
 MOVIE_API_KEY = 'af8d804575fad92d693d1775092e6217'
 
 # Database

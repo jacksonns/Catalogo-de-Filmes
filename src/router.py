@@ -1,7 +1,10 @@
-from app import app
-from flask import render_template, request, redirect, url_for
+from app import app, auth
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_user
 import requests
 from src.models.movie import Movie
+from src.models.user import User
+from src.forms.login_form import LoginForm
 
 MOVIE_BASE_URL = app.config["MOVIE_API_BASE_URL"]
 API_KEY = app.config["MOVIE_API_KEY"]
@@ -81,3 +84,27 @@ def movie(id):
                            id=id,
                            title=title,
                            movie=movie)
+
+
+''' Authentication '''
+
+@app.route("/login", methods = ["GET", "POST"])
+def login():
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        user = User.query.filter_by(email = login_form.email.data).first()
+        if user is not None and user.verify_password(login_form.password.data):
+            login_user(user, login_form.remember.data)
+            return redirect(request.args.get("next") or url_for("main.index"))
+
+        flash("Invalid Username or Password")
+    
+    title = "Login to Watchlist"
+    return render_template("login.html",
+                            login_form = login_form,
+                            title = title)
+
+
+@app.route("/register", methods = ["GET", "POST"])
+def register():
+    return "Register screen"
