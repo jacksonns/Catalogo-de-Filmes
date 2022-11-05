@@ -4,4 +4,4 @@ class Movie:
         self.id = id
         self.title = title
         self.synopsis = synopsis
-        self.poster = 'https://image.tmdb.org/t/p/w500/'+ poster
+        self.poster = 'https://image.tmdb.org/t/p/w500/' + poster
