@@ -58,5 +58,26 @@ def search(movie_name):
 
     title = f'search results for {movie_name}'
     return render_template('search.html',
-                            title = title,
-                            movies = search_movie_results)
+                           title=title,
+                           movies=search_movie_results)
+
+
+@app.route("/movie/<int:id>")
+def movie(id):
+    get_movie_details_url = MOVIE_BASE_URL.format(id, API_KEY)
+    movie_details_response = requests.get(get_movie_details_url).json()
+
+    if movie_details_response:
+        id = movie_details_response.get('id')
+        title = movie_details_response.get('original_title')
+        overview = movie_details_response.get('overview')
+        poster = movie_details_response.get('poster_path')
+
+        movie_object = Movie(id, title, overview, poster)
+
+    movie = movie_object
+    title = f'{movie.title}'
+    return render_template('movie.html',
+                           id=id,
+                           title=title,
+                           movie=movie)
