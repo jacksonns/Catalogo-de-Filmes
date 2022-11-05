@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint
+from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_simplemde import SimpleMDE
 from flask_sqlalchemy import SQLAlchemy
@@ -15,7 +15,6 @@ from src.models import user
 db.init_app(app)
 migrate = Migrate(app, db, render_as_batch=True)
 
-auth = Blueprint('auth',__name__)
 
 import src.router
 

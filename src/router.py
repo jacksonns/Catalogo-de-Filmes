@@ -1,4 +1,4 @@
-from app import app, auth
+from app import app
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user
 import requests
@@ -97,9 +97,9 @@ def login():
             login_user(user, login_form.remember.data)
             return redirect(request.args.get("next") or url_for("main.index"))
 
-        flash("Invalid Username or Password")
+        flash("E-mail ou senha inválidos")
     
-    title = "Login to Watchlist"
+    title = "Login"
     return render_template("login.html",
                             login_form = login_form,
                             title = title)
