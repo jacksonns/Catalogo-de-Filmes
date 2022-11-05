@@ -1,10 +1,11 @@
-from app import app
+from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_user
+from flask_login import login_user, logout_user, login_required
 import requests
 from src.models.movie import Movie
 from src.models.user import User
 from src.forms.login_form import LoginForm
+from src.forms.registration_form import RegistrationForm
 
 MOVIE_BASE_URL = app.config["MOVIE_API_BASE_URL"]
 API_KEY = app.config["MOVIE_API_KEY"]
@@ -88,6 +89,10 @@ def movie(id):
 
 ''' Authentication '''
 
+@login_manager.user_loader
+def user_loader(user_id):
+    return User.query.get(int(user_id))
+
 @app.route("/login", methods = ["GET", "POST"])
 def login():
     login_form = LoginForm()
@@ -95,7 +100,7 @@ def login():
         user = User.query.filter_by(email = login_form.email.data).first()
         if user is not None and user.verify_password(login_form.password.data):
             login_user(user, login_form.remember.data)
-            return redirect(request.args.get("next") or url_for("main.index"))
+            return redirect(request.args.get("next") or url_for("home"))
 
         flash("E-mail ou senha inválidos")
     
@@ -107,4 +112,27 @@ def login():
 
 @app.route("/register", methods = ["GET", "POST"])
 def register():
-    return "Register screen"
+   form = RegistrationForm()
+   if form.validate_on_submit():
+      user = User(email = form.email.data, username = form.username.data,
+                  password = form.password.data)
+      db.session.add(user)
+      db.session.commit()
+
+      return redirect(url_for("login"))
+   title = "Nova Conta"
+   return render_template("register.html", 
+                           registration_form = form,
+                           title = title)
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("home"))
+
+
+@app.route("/profile")
+def profile():
+   return "User Profile"
