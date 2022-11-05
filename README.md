@@ -1,7 +1,7 @@
 # Catálogo de Filmes 
 
 ## Grupo
-- Guilherme Miranda
+- Guilherme Miranda - 2018054788
 - Jackson Nunes Silva - 2018054532
 
 ## Descrição
