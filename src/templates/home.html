@@ -16,14 +16,14 @@
 </style>
 <div class="container">
     <form style="display: flex;">
-        <input type="text" name="movie_query" placeholder="Search for a Movie" class="form-control">
+        <input type="text" name="movie_query" placeholder="Procure por um filme" class="form-control">
         <input type="submit"  value="Submit" class="btn btn-default">
     </form>
 </div>
 
 <!-- Popular movies -->
 <div class="container">
-    <h3 class="text-center"> Filmes Populares</h3>
+    <h3 class="text-center">Filmes Populares</h3>
     <div>
         {{ macro.displayMovieList(popular)}}
     </div>
