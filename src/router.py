@@ -2,7 +2,7 @@ from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 import requests
-from src.models.movie import Movie, getMovieDetails
+from src.models.movie import Movie, getMovieDetails, getMoviesList
 from src.models.user import User
 from src.models.review import Review
 from src.forms.login_form import LoginForm
@@ -17,21 +17,8 @@ API_KEY = app.config["MOVIE_API_KEY"]
 @app.route('/')
 def home():
     movies_url = MOVIE_BASE_URL.format("popular", API_KEY)
-    movies_response = requests.get(movies_url).json()
 
-    movie_results = []
-    if movies_response['results']:
-        movie_results_list = movies_response['results']
-
-        for movie_item in movie_results_list:
-            id = movie_item.get('id')
-            title = movie_item.get('original_title')
-            overview = movie_item.get('overview')
-            poster = movie_item.get('poster_path')
-
-            if poster:
-                movie_object = Movie(id, title, overview, poster)
-                movie_results.append(movie_object)
+    movie_results = getMoviesList(movies_url)
 
     search_movie = request.args.get('movie_query')
     if search_movie:
@@ -45,23 +32,7 @@ def search(movie_name):
     movie_name_list = movie_name.split(" ")
     movie_name_format = "+".join(movie_name_list)
     search_movie_url = 'https://api.themoviedb.org/3/search/movie?api_key={}&query={}'.format(API_KEY, movie_name)
-    search_movie_response = requests.get(search_movie_url).json()
-
-    search_movie_results = []
-
-    if search_movie_response['results']:
-        search_movie_list = search_movie_response['results']
-        movie_results = []
-        for movie_item in search_movie_list:
-            id = movie_item.get('id')
-            title = movie_item.get('original_title')
-            overview = movie_item.get('overview')
-            poster = movie_item.get('poster_path')
-
-            if poster:
-                movie_object = Movie(id, title, overview, poster)
-                movie_results.append(movie_object)
-        search_movie_results = movie_results
+    search_movie_results = getMoviesList(search_movie_url)
 
     title = f'search results for {movie_name}'
     return render_template('search.html',
@@ -79,6 +50,7 @@ def movie(id):
                            title=title,
                            movie=movie,
                            reviews=reviews)
+
 
 
 @app.route("/watched/<int:id>")
@@ -189,6 +161,7 @@ def profile():
 @login_required
 def new_review(id):
     form = ReviewForm()
+
     movie = getMovieDetails(id, API_KEY, MOVIE_BASE_URL)
 
     if form.validate_on_submit():
