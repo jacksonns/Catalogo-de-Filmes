@@ -1,8 +1,7 @@
 from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
-import requests
-from src.models.movie import Movie, getMovieDetails, getMoviesList
+from src.models.movie import getMovieDetails, getMoviesList
 from src.models.user import User
 from src.models.review import Review
 from src.forms.login_form import LoginForm
