@@ -89,41 +89,43 @@ def movie(id):
 
 ''' Authentication '''
 
+
 @login_manager.user_loader
 def user_loader(user_id):
     return User.query.get(int(user_id))
 
-@app.route("/login", methods = ["GET", "POST"])
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
-        user = User.query.filter_by(email = login_form.email.data).first()
+        user = User.query.filter_by(email=login_form.email.data).first()
         if user is not None and user.verify_password(login_form.password.data):
             login_user(user, login_form.remember.data)
             return redirect(request.args.get("next") or url_for("home"))
 
         flash("E-mail ou senha inválidos")
-    
+
     title = "Login"
     return render_template("login.html",
-                            login_form = login_form,
-                            title = title)
+                           login_form=login_form,
+                           title=title)
 
 
-@app.route("/register", methods = ["GET", "POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
-   form = RegistrationForm()
-   if form.validate_on_submit():
-      user = User(email = form.email.data, username = form.username.data,
-                  password = form.password.data)
-      db.session.add(user)
-      db.session.commit()
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(email=form.email.data, username=form.username.data,
+                    password=form.password.data)
+        db.session.add(user)
+        db.session.commit()
 
-      return redirect(url_for("login"))
-   title = "Nova Conta"
-   return render_template("register.html", 
-                           registration_form = form,
-                           title = title)
+        return redirect(url_for("login"))
+    title = "Nova Conta"
+    return render_template("register.html",
+                           registration_form=form,
+                           title=title)
 
 
 @app.route("/logout")
@@ -135,4 +137,4 @@ def logout():
 
 @app.route("/profile")
 def profile():
-   return "User Profile"
+    return "User Profile"

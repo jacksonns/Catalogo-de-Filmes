@@ -15,7 +15,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 db = SQLAlchemy()
-from src.models import user, movie_list
+from src.models import user
 db.init_app(app)
 migrate = Migrate(app, db, render_as_batch=True)
 
