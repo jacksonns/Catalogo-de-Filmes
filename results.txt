@@ -1,0 +1,59 @@
+================================================
+  NLOC    CCN   token  PARAM  length  location  
+------------------------------------------------
+      10      1    127      0      11 upgrade@19-29@./migrations/versions/13dbe474339f_adding_movielist_table.py
+       2      1     10      0       3 downgrade@33-35@./migrations/versions/13dbe474339f_adding_movielist_table.py
+      10      1    127      0      11 upgrade@19-29@./migrations/versions/b234e3902d49_user_table.py
+       4      1     35      0       6 downgrade@34-39@./migrations/versions/b234e3902d49_user_table.py
+       5      1     66      0       6 upgrade@19-24@./migrations/versions/e93ab122e88a_add_movies_list.py
+      13      1    153      0      15 downgrade@29-43@./migrations/versions/e93ab122e88a_add_movies_list.py
+      13      1    167      0      14 upgrade@19-32@./migrations/versions/b226587abe17_adicionando_tabela_reviews.py
+       2      1     10      0       3 downgrade@36-38@./migrations/versions/b226587abe17_adicionando_tabela_reviews.py
+       7      1     41      0      19 run_migrations_offline@35-53@./migrations/env.py
+       6      3     49      3       6 run_migrations_online.process_revision_directives@67-72@./migrations/env.py
+      12      1     68      0      30 run_migrations_online@56-85@./migrations/env.py
+       3      2     30      2       3 validate_email@15-17@./src/forms/registration_form.py
+       3      2     30      2       3 validate_username@20-22@./src/forms/registration_form.py
+       2      1     13      2       2 verify_password@18-19@./src/models/user.py
+       3      1     20      1       3 save_review@18-20@./src/models/review.py
+       3      1     25      2       3 get_reviews@23-25@./src/models/review.py
+       5      1     35      5       5 __init__@3-7@./src/models/movie.py
+      19      5    136      0      23 home@18-40@./src/router.py
+      22      4    141      1      26 search@44-69@./src/router.py
+      17      2    118      1      20 movie@73-92@./src/router.py
+      15      3     77      1      16 watched@97-112@./src/router.py
+      15      3     77      1      16 to_watch@117-132@./src/router.py
+      24      5    179      0      31 my_list@135-165@./src/router.py
+       2      1     17      1       2 user_loader@172-173@./src/router.py
+      12      5    100      0      14 login@177-190@./src/router.py
+      12      2     83      0      13 register@194-206@./src/router.py
+       3      1     15      0       3 logout@211-213@./src/router.py
+       2      1      6      0       2 profile@217-218@./src/router.py
+      27      3    179      1      33 new_review@223-255@./src/router.py
+       2      1      7      1       2 open_review@259-260@./src/router.py
+15 file analyzed.
+==============================================================
+NLOC    Avg.NLOC  AvgCCN  Avg.token  function_cnt    file
+--------------------------------------------------------------
+     25       6.0     1.0       68.5         2     ./migrations/versions/13dbe474339f_adding_movielist_table.py
+     27       7.0     1.0       81.0         2     ./migrations/versions/b234e3902d49_user_table.py
+     31       9.0     1.0      109.5         2     ./migrations/versions/e93ab122e88a_add_movies_list.py
+     28       7.5     1.0       88.5         2     ./migrations/versions/b226587abe17_adicionando_tabela_reviews.py
+     41       8.3     1.7       52.7         3     ./migrations/env.py
+      7       0.0     0.0        0.0         0     ./src/forms/review_form.py
+      8       0.0     0.0        0.0         0     ./src/forms/login_form.py
+     17       3.0     2.0       30.0         2     ./src/forms/registration_form.py
+     14       2.0     1.0       13.0         1     ./src/models/user.py
+     20       3.0     1.0       22.5         2     ./src/models/review.py
+      6       5.0     1.0       35.0         1     ./src/models/movie.py
+      0       0.0     0.0        0.0         0     ./src/templates/__init__.py
+    201      13.2     2.8       87.3        13     ./src/router.py
+      9       0.0     0.0        0.0         0     ./config.py
+     19       0.0     0.0        0.0         0     ./app.py
+
+===============================================================================================================
+No thresholds exceeded (cyclomatic_complexity > 15 or length > 1000 or nloc > 1000000 or parameter_count > 100)
+==========================================================================================
+Total nloc   Avg.NLOC  AvgCCN  Avg.token   Fun Cnt  Warning cnt   Fun Rt   nloc Rt
+------------------------------------------------------------------------------------------
+       453       9.2     1.9       71.4       30            0      0.00    0.00
