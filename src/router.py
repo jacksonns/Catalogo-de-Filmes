@@ -255,6 +255,6 @@ def new_review(id):
                             movie = movie)
 
 
-@app.route('/review/<int:id>')
-def open_review(id):
+@app.route('/review')
+def open_review():
     return "Review details"
