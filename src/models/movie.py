@@ -20,3 +20,22 @@ def getMovieDetails(id, API_KEY, MOVIE_BASE_URL):
     poster = movie_details_response.get('poster_path')
 
     return Movie(id, title, overview, poster)
+
+
+def getMoviesList(movies_url):
+    movies_response = requests.get(movies_url).json()
+    movie_results = []
+    if movies_response['results']:
+        movie_results_list = movies_response['results']
+
+        for movie_item in movie_results_list:
+            id = movie_item.get('id')
+            title = movie_item.get('original_title')
+            overview = movie_item.get('overview')
+            poster = movie_item.get('poster_path')
+
+            if poster:
+                movie_object = Movie(id, title, overview, poster)
+                movie_results.append(movie_object)
+
+    return movie_results
