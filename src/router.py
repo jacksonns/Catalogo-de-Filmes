@@ -2,7 +2,7 @@ from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 import requests
-from src.models.movie import Movie
+from src.models.movie import Movie, getMovieDetails
 from src.models.user import User
 from src.models.review import Review
 from src.forms.login_form import LoginForm
@@ -71,25 +71,14 @@ def search(movie_name):
 
 @app.route("/movie/<int:id>")
 def movie(id):
-    get_movie_details_url = MOVIE_BASE_URL.format(id, API_KEY)
-    movie_details_response = requests.get(get_movie_details_url).json()
-
-    if movie_details_response:
-        id = movie_details_response.get('id')
-        title = movie_details_response.get('original_title')
-        overview = movie_details_response.get('overview')
-        poster = movie_details_response.get('poster_path')
-
-        movie_object = Movie(id, title, overview, poster)
-
-    movie = movie_object
+    movie = getMovieDetails(id, API_KEY, MOVIE_BASE_URL)
     title = f'{movie.title}'
-    reviews = Review.query.filter_by(movie_id = id).all()
+    reviews = Review.query.filter_by(movie_id=id).all()
     return render_template('movie.html',
                            id=id,
                            title=title,
                            movie=movie,
-                           reviews = reviews)
+                           reviews=reviews)
 
 
 @app.route("/watched/<int:id>")
@@ -136,33 +125,11 @@ def my_list():
     user = current_user
     wantToWatchList = []
     for movie in user.wantToWatchList:
-        get_movie_details_url = MOVIE_BASE_URL.format(movie, API_KEY)
-        movie_details_response = requests.get(get_movie_details_url).json()
-
-        if movie_details_response:
-            id = movie_details_response.get('id')
-            title = movie_details_response.get('original_title')
-            overview = movie_details_response.get('overview')
-            poster = movie_details_response.get('poster_path')
-
-            movie_object = Movie(id, title, overview, poster)
-
-        wantToWatchList.append(movie_object)
+        wantToWatchList.append(getMovieDetails(movie, API_KEY, MOVIE_BASE_URL))
 
     watchedList = []
     for movie in user.watchedList:
-        get_movie_details_url = MOVIE_BASE_URL.format(movie, API_KEY)
-        movie_details_response = requests.get(get_movie_details_url).json()
-
-        if movie_details_response:
-            id = movie_details_response.get('id')
-            title = movie_details_response.get('original_title')
-            overview = movie_details_response.get('overview')
-            poster = movie_details_response.get('poster_path')
-
-            movie_object = Movie(id, title, overview, poster)
-
-        watchedList.append(movie_object)
+        watchedList.append(getMovieDetails(movie, API_KEY, MOVIE_BASE_URL))
 
 
 ''' Authentication '''
@@ -222,19 +189,7 @@ def profile():
 @login_required
 def new_review(id):
     form = ReviewForm()
-
-    get_movie_details_url = MOVIE_BASE_URL.format(id, API_KEY)
-    movie_details_response = requests.get(get_movie_details_url).json()
-
-    if movie_details_response:
-        id = movie_details_response.get('id')
-        title = movie_details_response.get('original_title')
-        overview = movie_details_response.get('overview')
-        poster = movie_details_response.get('poster_path')
-
-        movie_object = Movie(id, title, overview, poster)
-
-    movie = movie_object
+    movie = getMovieDetails(id, API_KEY, MOVIE_BASE_URL)
 
     if form.validate_on_submit():
         title = form.title.data
