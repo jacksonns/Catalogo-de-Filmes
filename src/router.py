@@ -4,8 +4,11 @@ from flask_login import login_user, logout_user, login_required, current_user
 import requests
 from src.models.movie import Movie
 from src.models.user import User
+from src.models.review import Review
 from src.forms.login_form import LoginForm
 from src.forms.registration_form import RegistrationForm
+from src.forms.review_form import ReviewForm
+
 
 MOVIE_BASE_URL = app.config["MOVIE_API_BASE_URL"]
 API_KEY = app.config["MOVIE_API_KEY"]
@@ -81,10 +84,12 @@ def movie(id):
 
     movie = movie_object
     title = f'{movie.title}'
+    reviews = Review.query.filter_by(movie_id = id).all()
     return render_template('movie.html',
                            id=id,
                            title=title,
-                           movie=movie)
+                           movie=movie,
+                           reviews = reviews)
 
 
 @app.route("/watched/<int:id>")
@@ -211,3 +216,45 @@ def logout():
 @app.route("/profile")
 def profile():
     return "User Profile"
+
+
+@app.route('/movie/review/new/<int:id>', methods = ['GET','POST'])
+@login_required
+def new_review(id):
+    form = ReviewForm()
+
+    get_movie_details_url = MOVIE_BASE_URL.format(id, API_KEY)
+    movie_details_response = requests.get(get_movie_details_url).json()
+
+    if movie_details_response:
+        id = movie_details_response.get('id')
+        title = movie_details_response.get('original_title')
+        overview = movie_details_response.get('overview')
+        poster = movie_details_response.get('poster_path')
+
+        movie_object = Movie(id, title, overview, poster)
+
+    movie = movie_object
+
+    if form.validate_on_submit():
+        title = form.title.data
+        review = form.review.data
+        new_review = Review(movie_id = movie.id,
+                            movie_title = movie.title,
+                            image_path = movie.poster,
+                            review_title = title,
+                            movie_review = review,
+                            user_id = current_user.id)
+        new_review.save_review()
+        return redirect(url_for('movie',id = movie.id ))
+
+    title = f'{movie.title} review'
+    return render_template('new_review.html',
+                            title = title, 
+                            review_form = form, 
+                            movie = movie)
+
+
+@app.route('/review/<int:id>')
+def open_review(id):
+    return "Review details"

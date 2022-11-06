@@ -11,6 +11,15 @@
                     <h1>{{ movie.title }}</h1>   
                     <p class="overview"> {{ movie.synopsis }}</p>
                 </div>
+                <h3>Reviews</h3>
+                <hr>
+                {% if reviews %}
+                    {{macro.displayReviews(reviews)}}
+                    <a class="btn btn-success text-center" href="/movie/review/new/{{movie.id}}"> Escrever nova crítica</a>      
+                {% else%}
+                    <h3 class="text-center">Este filme não tem críticas </h3>
+                    <a class="btn btn-success text-center" href="/movie/review/new/{{movie.id}}"> Escrever nova crítica</a>
+                {% endif %}
             </div>
         </div> 
     </div>
