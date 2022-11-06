@@ -2,7 +2,7 @@ from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from src.models.movie import getMovieDetails, getMoviesList
-from src.models.user import User
+from src.models.user import User, is_valid
 from src.models.review import Review
 from src.forms.login_form import LoginForm
 from src.forms.registration_form import RegistrationForm
@@ -116,7 +116,7 @@ def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
         user = User.query.filter_by(email=login_form.email.data).first()
-        if user is not None and user.verify_password(login_form.password.data):
+        if is_valid(user, login_form.password.data):
             login_user(user, login_form.remember.data)
             return redirect(request.args.get("next") or url_for("home"))
 

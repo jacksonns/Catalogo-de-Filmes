@@ -17,3 +17,11 @@ class User(UserMixin, db.Model):
 
     def verify_password(self, password):
         return self.password == password
+
+
+def is_valid(user, password):
+    if user is None:
+        return False
+    if password != user.password:
+        return False
+    return True
