@@ -1,6 +1,6 @@
 from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 import requests
 from src.models.movie import Movie
 from src.models.user import User
@@ -85,6 +85,39 @@ def movie(id):
                            id=id,
                            title=title,
                            movie=movie)
+
+
+@app.route("/watched/<int:id>")
+@login_required
+def watched(id):
+    user = current_user
+    if user.watchedList is None:
+        user.watchedList = [id]
+    else:
+        if id not in user.watchedList:
+            watchedList = user.watchedList
+            watchedList.append(id)
+            user.watchedList = watchedList
+
+    db.session.commit()
+    return ', '.join(str(x) for x in user.watchedList)
+
+
+@app.route("/towatch/<int:id>")
+@login_required
+def towatch(id):
+    user = current_user
+    if user.wantToWatchList is None:
+        user.wantToWatchList = [id]
+    else:
+        if id not in user.wantToWatchList:
+            wantToWatchList = user.wantToWatchList
+            wantToWatchList.append(id)
+            user.wantToWatchList = wantToWatchList
+
+    db.session.commit()
+    print(user.wantToWatchList)
+    return ', '.join(str(x) for x in user.wantToWatchList)
 
 
 ''' Authentication '''
