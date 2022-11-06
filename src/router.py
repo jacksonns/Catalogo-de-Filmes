@@ -100,12 +100,12 @@ def watched(id):
             user.watchedList = watchedList
 
     db.session.commit()
-    return ', '.join(str(x) for x in user.watchedList)
+    return redirect(url_for("home"))
 
 
 @app.route("/towatch/<int:id>")
 @login_required
-def towatch(id):
+def to_watch(id):
     user = current_user
     if user.wantToWatchList is None:
         user.wantToWatchList = [id]
@@ -116,8 +116,40 @@ def towatch(id):
             user.wantToWatchList = wantToWatchList
 
     db.session.commit()
-    print(user.wantToWatchList)
-    return ', '.join(str(x) for x in user.wantToWatchList)
+    return redirect(url_for("home"))
+
+
+def my_list():
+    user = current_user
+    wantToWatchList = []
+    for movie in user.wantToWatchList:
+        get_movie_details_url = MOVIE_BASE_URL.format(movie, API_KEY)
+        movie_details_response = requests.get(get_movie_details_url).json()
+
+        if movie_details_response:
+            id = movie_details_response.get('id')
+            title = movie_details_response.get('original_title')
+            overview = movie_details_response.get('overview')
+            poster = movie_details_response.get('poster_path')
+
+            movie_object = Movie(id, title, overview, poster)
+
+        wantToWatchList.append(movie_object)
+
+    watchedList = []
+    for movie in user.watchedList:
+        get_movie_details_url = MOVIE_BASE_URL.format(movie, API_KEY)
+        movie_details_response = requests.get(get_movie_details_url).json()
+
+        if movie_details_response:
+            id = movie_details_response.get('id')
+            title = movie_details_response.get('original_title')
+            overview = movie_details_response.get('overview')
+            poster = movie_details_response.get('poster_path')
+
+            movie_object = Movie(id, title, overview, poster)
+
+        watchedList.append(movie_object)
 
 
 ''' Authentication '''
