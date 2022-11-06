@@ -14,6 +14,16 @@
         text-transform: uppercase;
     }
 </style>
+
+<div class="container">
+{%for message in get_flashed_messages()%}
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{message}}
+    </div>
+{%endfor%}
+</div>
+
 <div class="container">
     <form style="display: flex;">
         <input type="text" name="movie_query" placeholder="Procure por um filme" class="form-control">

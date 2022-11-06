@@ -92,12 +92,16 @@ def movie(id):
 def watched(id):
     user = current_user
     if user.watchedList is None:
+        flash("Filme inserido com sucesso!")
         user.watchedList = [id]
     else:
         if id not in user.watchedList:
             watchedList = user.watchedList
             watchedList.append(id)
             user.watchedList = watchedList
+            flash("Filme inserido com sucesso!")
+        else:
+            flash("Filme já inserido!")
 
     db.session.commit()
     return redirect(url_for("home"))
@@ -108,12 +112,16 @@ def watched(id):
 def to_watch(id):
     user = current_user
     if user.wantToWatchList is None:
+        flash("Filme inserido com sucesso!")
         user.wantToWatchList = [id]
     else:
         if id not in user.wantToWatchList:
             wantToWatchList = user.wantToWatchList
             wantToWatchList.append(id)
             user.wantToWatchList = wantToWatchList
+            flash("Filme inserido com sucesso!")
+        else:
+            flash("Filme já inserido!")
 
     db.session.commit()
     return redirect(url_for("home"))
