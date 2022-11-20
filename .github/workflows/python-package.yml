@@ -4,12 +4,12 @@ on: [push]
 
 jobs:
   build:
-
-    runs-on: [ubuntu-latest, macos-latest, windows-latest]
     strategy:
       matrix:
         python-version: ["3.9"]
+        runner: [ubuntu-latest, macos-latest, windows-latest]
 
+    runs-on: ${{matrix.runner}}
     steps:
       - uses: actions/checkout@v3
 
