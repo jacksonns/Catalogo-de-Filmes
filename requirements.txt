@@ -8,3 +8,4 @@ Flask-Login==0.6.2
 requests
 requests-mock
 WTForms==3.0.1
+selenium
