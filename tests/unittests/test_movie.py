@@ -43,3 +43,28 @@ class TestMovie():
             with pytest.raises(Exception):
                 m.get("https://api.themoviedb.org/3/movie/"+ movie.id +"?api_key= ", text='Not Found', status_code=404)
                 returnedMovie = getMovieDetails(movie.id, " ", "https://api.themoviedb.org/3/movie/{}?api_key={}")
+
+    def test_getMoviesList_success(self):
+        with requests_mock.Mocker() as m:
+            m.get("https://api.themoviedb.org/3/search/movie?api_key= &query=test", json = {'results': [
+                {
+                    'id': '123',
+                    'original_title': 'Movie Title',
+                    'overview': 'Movie Synopsis',
+                    'poster_path': 'path_to_poster'
+                },
+                {
+                    'id': '1233',
+                    'original_title': 'Movie Title_',
+                    'overview': 'Movie Synopsis_',
+                    'poster_path': 'path_to_poster_'
+                },
+            ]})
+            list_of_movies = getMoviesList("https://api.themoviedb.org/3/search/movie?api_key= &query=test")
+            assert len(list_of_movies) == 2
+
+    def test_getMoviesList_fail(self):
+        with requests_mock.Mocker() as m:
+            with pytest.raises(Exception):
+                m.get("https://api.themoviedb.org/3/search/movie?api_key= &query=test", text='Not Found', status_code=404)
+                list_of_movies = getMoviesList("https://api.themoviedb.org/3/search/movie?api_key= &query=test")
