@@ -12,5 +12,5 @@ class TestMovieSearch():
         search_element.submit()
         url = '/movie/598'
         element = chrome_driver.find_element('xpath', '//a[@href="'+url+'"]')
-        assert element is None
+        assert element is not None
 
