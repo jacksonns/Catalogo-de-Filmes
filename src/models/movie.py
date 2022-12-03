@@ -8,14 +8,18 @@ class Movie:
         self.synopsis = synopsis
         self.poster = 'https://image.tmdb.org/t/p/w500/' + poster
         self.grade = 0
+        self.watchers = 0
     
     def add_grade(self, new_grade):
-        if new_grade > 5:
+        if new_grade < 0 or new_grade > 5:
             raise Exception
         if self.grade == 0:
             self.grade = new_grade
         else:
             self.grade = (self.grade + new_grade) / 2
+    
+    def is_popular(self):
+        return self.watchers >= 2
 
 
 def getMovieDetails(id, API_KEY, MOVIE_BASE_URL):

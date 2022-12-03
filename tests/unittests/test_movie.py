@@ -2,6 +2,7 @@ import pytest
 import requests_mock
 from src.models.movie import Movie
 from src.models.movie import getMovieDetails, getMoviesList
+from src.models.user_repo import UserRepo
 
 @pytest.fixture
 def movie():
@@ -23,6 +24,20 @@ class TestMovie():
     def test_add_invalid_grade(self, movie):
         with pytest.raises(Exception):
             movie.add_grade(6)
+    
+    def test_adding_to_watch_list(self, movie):
+        user1 = UserRepo('U123', 'fulano1', 'email1@email.com', '123Fulano@')
+        user2 = UserRepo('U321', 'fulano2', 'emai2l@email.com', '321Fulano@')
+        user1.add_to_want_to_watch_list(movie)
+        user2.add_to_want_to_watch_list(movie)
+        assert movie.watchers == 2
+
+    def test_is_movie_popular(self, movie):
+        user1 = UserRepo('U123', 'fulano1', 'email1@email.com', '123Fulano@')
+        user2 = UserRepo('U321', 'fulano2', 'emai2l@email.com', '321Fulano@')
+        user1.add_to_want_to_watch_list(movie)
+        user2.add_to_want_to_watch_list(movie)
+        assert movie.is_popular()
 
     def test_getMovieDetails_success(self, movie):
         with requests_mock.Mocker() as m:
