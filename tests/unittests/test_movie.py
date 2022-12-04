@@ -32,12 +32,18 @@ class TestMovie():
         user2.add_to_want_to_watch_list(movie)
         assert movie.watchers == 2
 
-    def test_is_movie_popular(self, movie):
+    def test_is_movie_popular_false(self, movie):
+        assert movie.is_popular() == False
+        user1 = UserRepo('U123', 'fulano1', 'email1@email.com', '123Fulano@')
+        user1.add_to_want_to_watch_list(movie)
+        assert movie.is_popular() == False
+
+    def test_is_movie_popular_true(self, movie):
         user1 = UserRepo('U123', 'fulano1', 'email1@email.com', '123Fulano@')
         user2 = UserRepo('U321', 'fulano2', 'emai2l@email.com', '321Fulano@')
         user1.add_to_want_to_watch_list(movie)
         user2.add_to_want_to_watch_list(movie)
-        assert movie.is_popular()
+        assert movie.is_popular() == True
 
     def test_getMovieDetails_success(self, movie):
         with requests_mock.Mocker() as m:
